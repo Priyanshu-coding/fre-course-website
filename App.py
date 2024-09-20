@@ -38,15 +38,6 @@ def get_image_base64(image_path):
         st.error(f"File not found at {image_path}")
         return ""
 
-# Debugging: Print current working directory
-st.write(f"Current working directory: {os.getcwd()}")
-
-# Debugging: Check if the logo path is correct
-if os.path.exists(logo_path):
-    st.write(f"Logo found at: {logo_path}")
-else:
-    st.error(f"Logo not found at: {logo_path}")
-
 # Function to display categories with images and clickable category names
 def display_categories_with_clickable_names():
     categories = courses_data['Category'].unique()
