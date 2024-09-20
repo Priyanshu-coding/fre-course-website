@@ -59,10 +59,8 @@ def display_categories_with_clickable_names():
                     st.image(resized_image, use_column_width=True)  # Display image
 
                 # Create a clickable button for the category name
-                if category not in st.session_state.get('clicked_categories', []):
-                    if st.button(category):  # Create a button with the category name
-                        st.session_state.clicked_categories = st.session_state.get('clicked_categories', []) + [category]
-                        st.session_state.selected_category = category  # Set the selected category in session state
+                if st.button(category):  # Create a button with the category name
+                    st.session_state.selected_category = category  # Set the selected category in session state
 
             else:
                 st.error(f"Image for {category} not found.")  # Show error if image not found
@@ -182,7 +180,5 @@ if __name__ == '__main__':
     # Ensure session state for category selection exists
     if 'selected_category' not in st.session_state:
         st.session_state['selected_category'] = None
-    if 'clicked_categories' not in st.session_state:
-        st.session_state['clicked_categories'] = []
 
     main()
