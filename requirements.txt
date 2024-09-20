@@ -1,34 +1,35 @@
-altair==5.4.1
-attrs==24.2.0
-blinker==1.8.2
-cachetools==5.5.0
-certifi==2024.8.30
-charset-normalizer==3.3.2
-click==8.1.7
-filelock==3.16.1
-fsspec==2024.9.0
-fuzzywuzzy==0.18.0
-gitdb==4.0.11
-GitPython==3.1.43
-idna==3.10
-Jinja2==3.1.4
-joblib==1.4.2
-jsonschema==4.23.0
-Levenshtein==0.26.0
-numpy==1.24.3
+# Core dependencies
+streamlit==1.38.0
 pandas==2.2.2
+numpy>=1.26.0
+
+# Dependencies related to image processing, Git, etc.
 pillow==10.4.0
-python-dateutil==2.9.0.post0
+fuzzywuzzy==0.18.0
 python-Levenshtein==0.26.0
-pytz==2024.2
-regex==2024.9.11
+GitPython==3.1.43
+gitdb==4.0.11
+
+# JSON handling and validation
+jsonschema==4.23.0
+jsonschema-specifications==2023.12.1
+
+# Job management and tools
+joblib==1.4.2
+filelock==3.16.1
+
+# Web utilities and other core libraries
 requests==2.32.3
-rich==13.8.1
+Jinja2==3.1.4
+MarkupSafe==2.1.5
+click==8.1.7
+blinker==1.8.2
+attrs==24.2.0
+
+# Miscellaneous tools
+altair==5.4.1
 scikit-learn==1.5.2
 scipy==1.13.1
-six==1.16.0
-smmap==5.0.1
-streamlit==1.38.0
-sympy==1.13.3
-tornado==6.4.1
-tqdm==4.66.5
+
+# Additional core dependency
+setuptools>=60.0.0  # This should fix the 'distutils' issue
