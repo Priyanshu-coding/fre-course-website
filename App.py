@@ -7,26 +7,45 @@ from io import BytesIO  # To handle image-to-bytes conversion
 from fuzzywuzzy import process  # For fuzzy matching
 
 # Load data from CSV
-file_path = 'free_courses_data.csv'
- # Ensure the correct CSV file path
-courses_data = pd.read_csv(file_path)
+file_path = 'free_courses_data.csv'  # Ensure the correct CSV file path
+try:
+    courses_data = pd.read_csv(file_path)
+except FileNotFoundError:
+    st.error(f"CSV file not found at: {file_path}")
 
 # Load the Analytics Vidhya logo from the images folder in the project
-logo_path = 'images/analytics_vidhya_logo.jpeg'  # Path to logo image in the images folder (JPEG)
+logo_path = 'Images/analytics_vidhya_logo.jpeg'  # Correct folder name with capital "I"
 
 # Function to resize image to equal size
 def resize_image(image_path, size=(300, 300)):  # Set desired size for all images
-    image = Image.open(image_path)
-    resized_image = ImageOps.fit(image, size, Image.LANCZOS)  # Use LANCZOS for resizing
-    return resized_image
+    try:
+        image = Image.open(image_path)
+        resized_image = ImageOps.fit(image, size, Image.LANCZOS)  # Use LANCZOS for resizing
+        return resized_image
+    except FileNotFoundError:
+        st.error(f"Image file not found at {image_path}")
+        return None
 
 # Function to convert image to base64 for displaying
 def get_image_base64(image_path):
-    img = Image.open(image_path)
-    buffered = BytesIO()
-    img.save(buffered, format="JPEG")  # Save as JPEG instead of PNG
-    img_str = base64.b64encode(buffered.getvalue()).decode()
-    return img_str
+    try:
+        img = Image.open(image_path)
+        buffered = BytesIO()
+        img.save(buffered, format="JPEG")  # Save as JPEG instead of PNG
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        return img_str
+    except FileNotFoundError:
+        st.error(f"File not found at {image_path}")
+        return ""
+
+# Debugging: Print current working directory
+st.write(f"Current working directory: {os.getcwd()}")
+
+# Debugging: Check if the logo path is correct
+if os.path.exists(logo_path):
+    st.write(f"Logo found at: {logo_path}")
+else:
+    st.error(f"Logo not found at: {logo_path}")
 
 # Function to display categories with images and clickable category names
 def display_categories_with_clickable_names():
@@ -39,13 +58,14 @@ def display_categories_with_clickable_names():
     for i, category in enumerate(categories):
         with cols[i % 2]:  # Alternate between two columns
             # Path to the image file (assuming images are stored in .jpeg format)
-            image_path = f'images/{category}.jpeg'  # Ensure image files are named like categories
+            image_path = f'Images/{category}.jpeg'  # Ensure image files are named like categories
 
             # Check if the image exists
             if os.path.exists(image_path):
                 # Resize and display the image
                 resized_image = resize_image(image_path)
-                st.image(resized_image, use_column_width=True)  # Display image
+                if resized_image:  # Only display the image if resizing was successful
+                    st.image(resized_image, use_column_width=True)  # Display image
 
                 # Create a clickable button for the category name
                 if category not in st.session_state.get('clicked_categories', []):
@@ -137,15 +157,16 @@ def main():
 
     # Title and logo together
     logo_base64 = get_image_base64(logo_path)  # Get the base64 encoded string for the logo
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Analytics Vidhya Free Courses</h1>
-            <img src="data:image/jpeg;base64,{logo_base64}" class="logo" width="150">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    if logo_base64:
+        st.markdown(
+            f"""
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Analytics Vidhya Free Courses</h1>
+                <img src="data:image/jpeg;base64,{logo_base64}" class="logo" width="150">
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     # Search Section
     query = st.text_input("Search for a course:")
