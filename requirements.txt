@@ -31,5 +31,9 @@ altair==5.4.1
 scikit-learn==1.5.2
 scipy==1.13.1
 
+# Huggingface transformers and PyTorch for LLM usage
+transformers==4.33.3
+torch==2.0.1
+
 # Additional core dependency
-setuptools>=60.0.0  # This should fix the 'distutils' issue
+setuptools>=60.0.0  # Fixes distutils issue
